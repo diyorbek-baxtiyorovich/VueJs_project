@@ -50,7 +50,7 @@ export default {
         }
     },
     methods: {
-        addMovie(newMovie) { 
+        addMovie(newMovie) {
             this.movies.push(newMovie);
         }, 
         updateSearchQuery(query) {
