@@ -21,6 +21,7 @@
 </template>
 
 <script>
+import axios from 'axios';
 import AppFilter from '../app-filter/AppFilter.vue';
 import AppInfo from '../app-info/AppInfo.vue';
 import MovieAddForm from '../movie-add-form/MovieAddForm.vue';
@@ -37,11 +38,7 @@ export default {
     },
     data() {
         return {
-            movies: [
-                { name: "Keybda", viewers: 542, like: true, favorite: false, id: 1 },
-                { name: "Samobo", viewers: 513, like: false, favorite: true, id: 2 },
-                { name: "Direktsv", viewers: 123, like: false, favorite: false, id: 3 }
-            ],
+            movies: [],
             searchQuery: ''
         };
     },
@@ -71,7 +68,21 @@ export default {
         },
         onDeleteHandel(id){
             this.movies = this.movies.filter(c => c.id !== id)
+        },
+        async fetchMovie(){
+            const {data} = await axios.get("https://jsonplaceholder.typicode.com/posts?_limit=10");
+            const newArr = data.map(item => ({
+                id: item.id,
+                name: item.title,
+                like: false,
+                favorite: false,
+                viewers: item.id * 10
+            }))
+            this.movies = newArr
         }
+    },
+    mounted(){
+        this.fetchMovie()
     }
 }
 </script>
